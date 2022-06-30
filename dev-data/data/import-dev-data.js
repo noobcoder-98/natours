@@ -1,11 +1,14 @@
 const fs = require('fs')
+
 const dotenv = require('dotenv')
-dotenv.config({path: './config.env'})
-const Tour = require('../../models/tourModel')
+
+dotenv.config({ path: './config.env' })
 const mongoose = require('mongoose')
-const db_uri = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+const Tour = require('../../models/tourModel')
+
+const dbUri = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
 mongoose
-  .connect(db_uri, {
+  .connect(dbUri, {
     useNewUrlParser: true,
   })
   .then((conn) => console.log('DB connection successful'))
@@ -13,7 +16,7 @@ mongoose
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'))
 
 /** Import data */
-const importData = async() => {
+const importData = async () => {
   try {
     await Tour.create(tours)
     console.log('Data successfully loaded!')
@@ -24,7 +27,7 @@ const importData = async() => {
 }
 
 /** Delete all  */
-const deleteAll = async() => {
+const deleteAll = async () => {
   try {
     await Tour.deleteMany()
     console.log('Data successfully deleted!')
@@ -39,5 +42,3 @@ if (process.argv[2] === '--import') {
 } else if (process.argv[2] === '--delete') {
   deleteAll()
 }
-
-console.log(process.argv)

@@ -1,4 +1,3 @@
-const fs = require('fs')
 const Tour = require('../models/tourModel')
 
 exports.getAllTour = async (req, res) => {
@@ -57,7 +56,7 @@ exports.updateTour = async (req, res) => {
   try {
     const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     })
     res.status(200).json({
       status: 'success',
@@ -75,13 +74,13 @@ exports.updateTour = async (req, res) => {
 
 exports.deleteTour = async (req, res) => {
   try {
-    const tour = await Tour.findByIdAndDelete(req.params.id, req.body, {
+      await Tour.findByIdAndDelete(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     })
     res.status(204).json({
       status: 'success',
-      data: null
+      data: null,
     })
   } catch (error) {
     res.status(404).json({
