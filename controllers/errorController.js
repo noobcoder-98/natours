@@ -12,10 +12,14 @@ const handleDuplicateFieldDB = (err) => {
 }
 
 const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map(e => e.message)
+  const errors = Object.values(err.errors).map((e) => e.message)
   const message = `Invalid input data. ${errors.join('. ')}`
   return new AppError(message, 400)
 }
+
+const handleJWTError = () => new AppError('Invalid token. Please log in again!', 401)
+
+const handleJWTExpriredError = () => new AppError('Your token is exprired! Please log in again', 401)
 
 exports.globalErrorHandle = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500
@@ -38,6 +42,10 @@ exports.globalErrorHandle = (err, req, res, next) => {
       error = handleDuplicateFieldDB(error)
     } else if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error)
+    } else if (error.name === 'JsonWebTokenError') {
+      error = handleJWTError()
+    } else if (error.name === 'TokenExpriredError') {
+      error = handleJWTExpriredError()
     }
     if (error.isOperational) {
       res.status(error.statusCode).json({
