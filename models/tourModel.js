@@ -88,7 +88,7 @@ const tourSchema = mongoose.Schema(
       {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-      }
+      },
     ],
   },
   {
@@ -97,9 +97,9 @@ const tourSchema = mongoose.Schema(
   }
 )
 
-// tourSchema.virtuals('durationWeeks').get(function () {
-//   return this.duration / 7
-// })
+tourSchema.virtual('durationWeeks').get(function () {
+  return this.duration / 7
+})
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 // tourSchema.pre('save', function(next) {
@@ -112,23 +112,23 @@ const tourSchema = mongoose.Schema(
 // })
 
 // QUERY MIDDLEWARE
-tourSchema.pre(/^find/, function (next) {
-  this.find({ secretTour: { $ne: true } })
-  this.start = Date.now()
-  next()
-})
+// tourSchema.pre(/^find/, function (next) {
+//   this.find({ secretTour: { $ne: true } })
+//   this.start = Date.now()
+//   next()
+// })
 
-tourSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'guides',
-    select: '-__v -passwordChangedAt',
-  })
-  next()
-})
-tourSchema.post(/^find/, function (next) {
-  console.log(`Query took ${Date.now() - this.start} miliseconds!`)
-  next()
-})
+// tourSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'guides',
+//     select: '-__v -passwordChangedAt',
+//   })
+//   next()
+// })
+// tourSchema.post(/^find/, function (next) {
+//   console.log(`Query took ${Date.now() - this.start} miliseconds!`)
+//   next()
+// })
 const Tour = mongoose.model('Tour', tourSchema)
 
 module.exports = Tour

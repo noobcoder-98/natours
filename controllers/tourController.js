@@ -11,7 +11,7 @@ exports.aliasTopTours = (req, res, next) => {
 }
 
 exports.getAllTour = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate()
+  const features = new APIFeatures(Tour.find(), req.query).filter().sort().paginate()
   const tours = await features.query
   res.status(200).json({
     status: 'success',
