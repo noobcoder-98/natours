@@ -6,12 +6,14 @@ const {
   updateTour,
   deleteTour,
   aliasTopTours,
+  getMonthlyPlan,
 } = require('../controllers/tourController')
 const { protect, restrictTo } = require('../controllers/authController')
 
 const router = express.Router()
 
-router.route('/top-5-cheap').get(aliasTopTours, getAllTour)
+router.get('/top-5-cheap', aliasTopTours, getAllTour)
+router.get('/monthly-plan/:year', getMonthlyPlan)
 router.route('/').get(protect, getAllTour).post(createTour)
 router
   .route('/:id')

@@ -6,9 +6,11 @@ dotenv.config({ path: './config.env' })
 const mongoose = require('mongoose')
 const Tour = require('../../models/tourModel')
 
-const dbUri = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+// const dbUri = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+const dbURILocal = process.env.DATABASE_LOCAL.replace('<password>', process.env.DATABASE_PASSWORD_LOCAL)
+
 mongoose
-  .connect(dbUri, {
+  .connect(dbURILocal, {
     useNewUrlParser: true,
   })
   .then((conn) => console.log('DB connection successful'))
