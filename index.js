@@ -10,9 +10,9 @@ dotenv.config({ path: './config.env' })
 const app = require('./app')
 
 const dbURI = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
-const dbURILocal = process.env.DATABASE_LOCAL.replace('<password>', process.env.DATABASE_PASSWORD_LOCAL)
+// const dbURI = process.env.LOCAL_DATABASE_URI
 mongoose
-  .connect(dbURILocal, {
+  .connect(dbURI, {
     useNewUrlParser: true,
   })
   .then((conn) => {
