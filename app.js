@@ -10,7 +10,7 @@ const hpp = require('hpp')
 const { globalErrorHandle } = require('./controllers/errorController')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
-const reviewRouter = require('./routes/reviewRouters')
+const reviewRouter = require('./routes/reviewRoutes')
 const AppError = require('./utils/appError')
 
 // GLOBAL MIDDLEWARES

@@ -9,8 +9,8 @@ process.on('uncaughtException', (err) => {
 dotenv.config({ path: './config.env' })
 const app = require('./app')
 
-const dbURI = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
-// const dbURI = process.env.LOCAL_DATABASE_URI
+// const dbURI = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+const dbURI = process.env.LOCAL_DATABASE_URI
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
