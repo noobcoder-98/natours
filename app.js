@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const monggoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
+const cors = require('cors')
 const { globalErrorHandle } = require('./controllers/errorController')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
@@ -21,7 +22,7 @@ app.set('views', path.join(__dirname, 'views'))
 /** GLOBAL MIDDLEWARES */
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')))
-
+app.use(cors())
 // Set security HTTP headers
 app.use(helmet())
 
