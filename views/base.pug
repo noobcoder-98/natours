@@ -1,5 +1,6 @@
 html(lang='en')
   block head
+    script(src='/libs/axios/axios.min.js')
     head
       meta(charset='UTF-8')
       meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -7,11 +8,11 @@ html(lang='en')
       link(rel='stylesheet', href='/css/style.css')
       link(rel='shortcut icon', type='image/pnp', href='/img/favicon.png')
       link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
-      title Natours | #{title}
+      title Natours | #{ title }
   body 
     include _header
     block content
       h1 haha
     include _footer
-  script(src="/js/mapbox.js")
-  
+  script(src='/js/mapbox.js')
+  script(src='/js/login.js')

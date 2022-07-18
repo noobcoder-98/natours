@@ -1,6 +1,5 @@
 const express = require('express')
-const { getTour } = require('../controllers/viewController')
-const { getOverview } = require('../controllers/viewController')
+const { getTour, getLoginForm, getOverview } = require('../controllers/viewController')
 
 const router = express.Router()
 
@@ -11,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/overview', getOverview)
-
 router.get('/tour/:slug', getTour)
+router.get('/login', getLoginForm)
 
 module.exports = router
