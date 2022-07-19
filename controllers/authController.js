@@ -15,17 +15,17 @@ const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id)
   const cookieOptions = {
     expiresIn: Date(Date.now + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    httpOnly: true
+    httpOnly: true,
   }
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true
   res.cookie('jwt', token, cookieOptions)
 
   // Remove password from output
   user.password = undefined
-  
+
   res.status(statusCode).json({
     status: 'success',
-    token
+    token,
   })
 }
 
@@ -59,11 +59,36 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res)
 })
 
+// Only for rendered pages, no errors
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  /** 1. Getting token and check of it's there */
+  if (req.cookies.jwt) {
+    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET)
+
+    /** 2. Check if user still exists */
+    const currentUser = await User.findById(decoded.id)
+    if (!currentUser) {
+      return next()
+    }
+
+    /** 3. Check if user changed password after the token was issued */
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next()
+    }
+
+    res.locals.user = currentUser
+    return next()
+  }
+  next()
+})
+
 exports.protect = catchAsync(async (req, res, next) => {
   /** 1. Getting token and check of it's there */
   let token
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt
   }
   if (!token) {
     return next(new AppError('You are not logged in! Please log in to get access'), 401)
@@ -157,7 +182,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1. Get user from collection
   const user = User.findById(req.body.id).select('+password')
   // 2. Check if POSTed current user password is correct
-  if (!user && ! (await user.correctPassword(req.body.passwordCurrent, user.password))) {
+  if (!user && !(await user.correctPassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError('Your current password is wrong', 401))
   }
   // 3. If so, update password

@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const monggoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
+const cookieParser = require('cookie-parser')
 const { globalErrorHandle } = require('./controllers/errorController')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
@@ -39,6 +40,7 @@ app.use('/api', limiter)
 
 // Body parser, reading data drom body into req.body
 app.use(express.json({ limit: '10kb' }))
+app.use(cookieParser())
 
 // Data sanitization against NoSQL injection
 app.use(monggoSanitize())
@@ -57,12 +59,13 @@ app.use(
       'difficulty',
       'price',
     ],
-  })
+})
 )
 
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString()
+  console.log(req.cookies)
   next()
 })
 

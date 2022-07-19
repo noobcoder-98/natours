@@ -1,15 +1,10 @@
 const express = require('express')
+const { isLoggedIn } = require('../controllers/authController')
 const { getTour, getLoginForm, getOverview } = require('../controllers/viewController')
 
 const router = express.Router()
-
-router.get('/', (req, res) => {
-  res.status(200).render('base', {
-    title: 'haha'
-  })
-})
-
-router.get('/overview', getOverview)
+router.use(isLoggedIn)
+router.get('/', getOverview)
 router.get('/tour/:slug', getTour)
 router.get('/login', getLoginForm)
 
