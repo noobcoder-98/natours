@@ -4,7 +4,7 @@ mixin navItem(link, text, icon, active)
   li(class=`${active  ? ' side-nav--active' : ''}`)
     a(href=`${link}`)
       svg
-        use(xlink:href=`img/cons.svg#icon-${icon}`)
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
       | #{ text }
 block content
   main.main
@@ -26,6 +26,11 @@ block content
       .user-view__content
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Your account settings
+
+          //- Without API
+          //- form.form.form-user-data(action='/submit-user-data' method='POST')
+
+          //- With API
           form.form.form-user-data
             .form__group
               label.form__label(for='name') Name
@@ -41,7 +46,7 @@ block content
         .line &nbsp;
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Password change
-          form.form.form-user-settings(action='/submit-user-data' method='POST')
+          form.form.form-user-password
             .form__group
               label.form__label(for='password-current') Current password
               input#password-current.form__input(
@@ -67,4 +72,4 @@ block content
                 minlength='8'
               )
             .form__group.right
-              button.btn.btn--small.btn--green Save password
+              button.btn.btn--small.btn--green.btn--save-password Save password
