@@ -1,6 +1,4 @@
 const express = require('express')
-const multer = require('multer')
-const path = require('path')
 const {
   getAllUsers,
   createUser,
@@ -11,7 +9,7 @@ const {
   deleteMe,
   getMe,
   uploadUserPhoto,
-  resizeUserPhoto
+  resizeUserPhoto,
 } = require('../controllers/userControllers')
 const {
   signup,
@@ -23,7 +21,6 @@ const {
   restrictTo,
   logout,
 } = require('../controllers/authController')
-
 
 const router = express.Router()
 router.post('/signup', signup)
