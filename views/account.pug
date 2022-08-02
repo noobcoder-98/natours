@@ -12,7 +12,7 @@ block content
       nav.user-view__menu
         ul.side-nav
           +navItem('#', 'Setting', 'settings', true)
-          +navItem('#', 'My Bookings', 'briefcase')
+          +navItem('/my-tours', 'My Bookings', 'briefcase')
           +navItem('#', 'My Review', 'star')
           +navItem('#', 'Billing', 'credit-card')
         - if (user.role === 'admin')
@@ -40,7 +40,7 @@ block content
               input#email.form__input(type='email', value=`${user.email}`, required, name='email')
             .form__group.form__photo-upload
               img.form__user-photo(src=`/img/users/${user.photo}`, alt=`Photo of ${user.name}`)
-                input#photo.form__upload(type='file', accept='image/*', name='photo')
+              input#photo.form__upload(type='file', accept='image/*', name='photo')
             label(for='photo') Choose new photo
             .form__group.right
               button.btn.btn--small.btn--green Save settings
