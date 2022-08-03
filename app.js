@@ -7,7 +7,10 @@ const monggoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const { globalErrorHandle } = require('./controllers/errorController')
+const { webhookCheckout } = require('./controllers/bookingController')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
 const reviewRouter = require('./routes/reviewRoutes')
@@ -21,6 +24,10 @@ app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 
 /** GLOBAL MIDDLEWARES */
+
+// Implement cors
+app.use(cors())
+app.options('*', cors())
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')))
 // Set security HTTP headers
@@ -39,13 +46,15 @@ const limiter = rateLimit({
 })
 app.use('/api', limiter)
 
+app.post('/webhook-checkout', bodyParser.raw({ type: 'application/json' }), webhookCheckout)
+
 // Body parser, reading data drom body into req.body
 app.use(express.json({ limit: '10kb' }))
 app.use(express.urlencoded({ extended: true, limit: '10kb' }))
 app.use(cookieParser())
 
 // Data sanitization against NoSQL injection
-app.use(monggoSanitize())   
+app.use(monggoSanitize())
 
 // Data sanitizatin against XSS
 app.use(xss())
